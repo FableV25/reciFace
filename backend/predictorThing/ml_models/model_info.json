@@ -1,0 +1,58 @@
+{
+  "num_classes": {
+    "sex": 2,
+    "eyes": 7,
+    "race": 6,
+    "hair": 8
+  },
+  "class_names": {
+    "sex": [
+      "Female",
+      "Male"
+    ],
+    "eyes": [
+      "Black",
+      "Blue",
+      "Brown",
+      "Gray",
+      "Green",
+      "Hazel",
+      "Maroon"
+    ],
+    "race": [
+      "Amer Indian",
+      "Asian",
+      "Bi-Racial",
+      "Black",
+      "Hispanic",
+      "White"
+    ],
+    "hair": [
+      "Bald",
+      "Black",
+      "Blonde or Strawberry",
+      "Brown",
+      "Gray or Partially Gray",
+      "Red or Auburn",
+      "Salt and Pepper",
+      "White"
+    ]
+  },
+  "input_size": [
+    224,
+    224
+  ],
+  "normalization": {
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  },
+  "model_architecture": "efficientnet_b0"
+}

@@ -1,0 +1,26 @@
+<!-- templates/predictor/upload.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Face Attribute Predictor</title>
+</head>
+<body>
+    <h1>Predict Face Attributes</h1>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit">Predict</button>
+    </form>
+    
+    {% if predictions %}
+    <h2>Results:</h2>
+    <ul>
+        <li>Sex: {{ predictions.sex.prediction }} ({{ predictions.sex.confidence }}%)</li>
+        <li>Eyes: {{ predictions.eyes.prediction }} ({{ predictions.eyes.confidence }}%)</li>
+        <li>Race: {{ predictions.race.prediction }} ({{ predictions.race.confidence }}%)</li>
+        <li>Hair: {{ predictions.hair.prediction }} ({{ predictions.hair.confidence }}%)</li>
+    </ul>
+    {% endif %}
+</body>
+</html>
