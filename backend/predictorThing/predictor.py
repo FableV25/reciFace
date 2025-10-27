@@ -10,7 +10,7 @@ import os
 from pathlib import Path
 
 class MultiTaskFaceModel(nn.Module):
-    """Misma arquitectura que usaste en Kaggle"""
+    
     def __init__(self, num_classes_dict):
         super(MultiTaskFaceModel, self).__init__()
         
@@ -50,7 +50,7 @@ class MultiTaskFaceModel(nn.Module):
 
 
 class FaceAttributePredictor:
-    """Clase para hacer predicciones en Django"""
+    """clase de predicciones en Django"""
     
     def __init__(self):
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -60,11 +60,18 @@ class FaceAttributePredictor:
         self._load_model()
     
     def _load_model(self):
-        """Carga el modelo y los encoders"""
-        # Rutas a los archivos
-        base_path = Path(__file__).parent.parent / 'ml_models'
+        """carga el modelo y los encoders"""
+        base_path = Path(__file__).parent / 'ml_models' 
         model_path = base_path / 'face_model_for_django.pth'
         encoders_path = base_path / 'label_encoders.pkl'
+        
+        # Verificacion de archivos
+        if not model_path.exists():
+            raise FileNotFoundError(f"no se encontro el modelo en: {model_path}")
+        if not encoders_path.exists():
+            raise FileNotFoundError(f"no se encontraron los encoders en: {encoders_path}")
+        
+        print(f"modelo cargado de: {model_path}")
         
         # Carga el modelo
         checkpoint = torch.load(model_path, map_location=self.device)
@@ -73,11 +80,11 @@ class FaceAttributePredictor:
         self.model.to(self.device)
         self.model.eval()
         
-        # Carga los encoders
+        # encoders
         with open(encoders_path, 'rb') as f:
             self.encoders = pickle.load(f)
         
-        # Define las transformaciones
+        # define las transformaciones
         self.transform = transforms.Compose([
             transforms.Resize((224, 224)),
             transforms.ToTensor(),
@@ -87,32 +94,24 @@ class FaceAttributePredictor:
             )
         ])
         
-        print(f"✅ Modelo cargado en {self.device}")
+        print(f"modelo cargado en {self.device}")
     
     def predict(self, image_path_or_pil):
-        """
-        Predice los atributos faciales de una imagen
-        
-        Args:
-            image_path_or_pil: Ruta a la imagen o objeto PIL.Image
-        
-        Returns:
-            dict con las predicciones y confianzas
-        """
-        # Carga la imagen
+
+        # cargar imagen
         if isinstance(image_path_or_pil, str):
             image = Image.open(image_path_or_pil).convert('RGB')
         else:
             image = image_path_or_pil.convert('RGB')
         
-        # Preprocesa
+        # preprocesar
         image_tensor = self.transform(image).unsqueeze(0).to(self.device)
         
-        # Predicción
+        # predicción
         with torch.no_grad():
             outputs = self.model(image_tensor)
         
-        # Procesa resultados
+        # procesar resultados
         results = {}
         
         for task in ['sex', 'eyes', 'race', 'hair']:
@@ -128,19 +127,19 @@ class FaceAttributePredictor:
         return results
     
     def predict_batch(self, image_paths):
-        """Predice múltiples imágenes de forma eficiente"""
+        
         results = []
         for img_path in image_paths:
             results.append(self.predict(img_path))
         return results
 
 
-# Instancia global (se carga una sola vez cuando Django arranca)
+# global instance and shi
 predictor = None
 
 def get_predictor():
-    """Obtiene la instancia del predictor (Singleton pattern)"""
+    
     global predictor
     if predictor is None:
         predictor = FaceAttributePredictor()
-    return predictor
+    return predictor    

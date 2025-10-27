@@ -4,26 +4,33 @@ from django.views.decorators.csrf import csrf_exempt
 from .predictor import get_predictor
 from PIL import Image
 import io
+import traceback
 
 def predict_face_view(request):
-    """Vista para predecir atributos faciales"""
+    
+    
+    
     if request.method == 'POST' and request.FILES.get('image'):
         try:
-            # Obtén la imagen del request
+            # this thing gets the image from the the request
             image_file = request.FILES['image']
             image = Image.open(io.BytesIO(image_file.read()))
             
-            # Haz la predicción
+            
             predictor = get_predictor()
             results = predictor.predict(image)
             
-            # Retorna JSON
+            
             return JsonResponse({
                 'success': True,
                 'predictions': results
             })
         
         except Exception as e:
+            # print errors
+            print("❌ ERROR en predicción:")
+            print(traceback.format_exc())
+            
             return JsonResponse({
                 'success': False,
                 'error': str(e)
@@ -32,10 +39,10 @@ def predict_face_view(request):
     return render(request, 'predictor/upload.html')
 
 
-# API endpoint (opcional)
+# API endpoint
 @csrf_exempt
 def api_predict(request):
-    """Endpoint de API para predicciones"""
+    
     if request.method == 'POST' and request.FILES.get('image'):
         try:
             image_file = request.FILES['image']
@@ -59,6 +66,9 @@ def api_predict(request):
             })
         
         except Exception as e:
+            print("API ERROR :")
+            print(traceback.format_exc())
+            
             return JsonResponse({
                 'success': False,
                 'error': str(e)

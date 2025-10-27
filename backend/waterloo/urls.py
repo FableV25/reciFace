@@ -8,6 +8,6 @@ urlpatterns = [
     path('', include('predictorThing.urls')),  
 ]
 
-# Para servir archivos media en desarrollo
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

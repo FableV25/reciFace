@@ -1,25 +1,49 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Face Attribute Predictor</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
-    <h1>Predict Face Attributes</h1>
-    
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" name="image" accept="image/*" required>
-        <button type="submit">Predict</button>
-    </form>
-    
-    {% if predictions %}
-    <h2>Results:</h2>
-    <ul>
-        <li>Sex: {{ predictions.sex.prediction }} ({{ predictions.sex.confidence }}%)</li>
-        <li>Eyes: {{ predictions.eyes.prediction }} ({{ predictions.eyes.confidence }}%)</li>
-        <li>Race: {{ predictions.race.prediction }} ({{ predictions.race.confidence }}%)</li>
-        <li>Hair: {{ predictions.hair.prediction }} ({{ predictions.hair.confidence }}%)</li>
-    </ul>
-    {% endif %}
+    <div class="container">
+        <h1>Titulo tittle</h1>
+        <p class="subtitle">Carga una imagen para extraer algunas caracteristicas</p>
+
+        <form id="uploadForm" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📸</div>
+                <div class="upload-text">
+                    <strong>Click para seleccionar</strong> o arrastra tu imagen 
+                </div>
+                <div class="file-name" id="fileName"></div>
+                <input type="file" id="fileInput" name="image" accept="image/*" required>
+            </div>
+
+            <div class="preview-container">
+                <img id="imagePreview" alt="Preview">
+            </div>
+
+            <button type="submit" class="btn" id="predictBtn">Procesar imagen</button>
+        </form>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 10px; color: #667eea;">Procesando imagen...</p>
+        </div>
+
+        <div class="error" id="error"></div>
+
+        <div class="results" id="results">
+            <h2>Resultados</h2>
+            <div id="resultsContent"></div>
+            <button class="btn reset-btn" id="resetBtn">Analizar otra imagen</button>
+        </div>
+    </div>
+
+    <script src="{% static 'script.js' %}"></script>
 </body>
 </html>
