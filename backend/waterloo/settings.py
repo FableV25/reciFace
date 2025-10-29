@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-)0h34#ac@yb+96wic^@$-bigj2ap1oyjq)!vlm9s%zzh$kdc-i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'predictorThing',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -48,6 +49,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
 ]
 
 ROOT_URLCONF = 'waterloo.urls'
