@@ -82,8 +82,12 @@ WSGI_APPLICATION = 'waterloo.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'face_analysis_db',  
+        'USER': 'postgres',           
+        'PASSWORD': 'postgres123',    
+        'HOST': 'localhost',          # or '127.0.0.1'
+        'PORT': '5432',               # default PostgreSQL port
     }
 }
 
@@ -110,9 +114,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en-us' # es-mx
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Chihuahua'
 
 USE_I18N = True
 
